@@ -1,0 +1,80 @@
+{
+  "env": {
+    "node": true,
+    "browser": true,
+    "shared-node-browser": true
+  },
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
+    "airbnb-base",
+    "airbnb-typescript/base",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/strict",
+    "plugin:prettier/recommended"
+  ],
+  "ignorePatterns": ["node_modules", ".vscode"],
+  "overrides": [],
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "project": true,
+    "sourceType": "module",
+    "tsconfigRootDir": "./"
+  },
+  "plugins": ["@typescript-eslint", "prefer-arrow-functions", "prettier"],
+  "root": true,
+  "rules": {
+    "@typescript-eslint/consistent-type-definitions": [2, "type"],
+    "@typescript-eslint/consistent-type-imports": [2],
+    "@typescript-eslint/naming-convention": [
+      2,
+      {
+        "format": ["PascalCase"],
+        "selector": ["typeLike"]
+      },
+      {
+        "format": ["PascalCase", "camelCase"],
+        "selector": ["variable"],
+        "types": ["function"]
+      },
+      {
+        "format": ["camelCase", "UPPER_CASE"],
+        "selector": ["variable"],
+        "types": ["array", "boolean", "number", "string"]
+      },
+      {
+        "format": null,
+        "modifiers": ["requiresQuotes"],
+        "selector": ["objectLiteralProperty"]
+      },
+      {
+        "format": ["camelCase"],
+        "selector": ["parameter"]
+      }
+    ],
+    "@typescript-eslint/no-floating-promises": [0],
+    "@typescript-eslint/no-throw-literal": [0],
+    "no-console": [0],
+    "no-param-reassign": [
+      2,
+      {
+        "props": false
+      }
+    ],
+    "prefer-arrow-functions/prefer-arrow-functions": [2],
+    "prettier/prettier": [
+      2,
+      {
+        "arrowParens": "avoid",
+        "bracketSameLine": true,
+        "endOfLine": "auto",
+        "parser": "typescript",
+        "singleAttributePerLine": true
+      }
+    ],
+    "@typescript-eslint/no-explicit-any": [2, { "fixToUnknown": true }],
+    "@typescript-eslint/no-duplicate-type-constituents": [2]
+  }
+}

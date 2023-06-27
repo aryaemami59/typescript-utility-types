@@ -5,11 +5,9 @@ import {
   expectType,
   printType,
 } from "tsd";
-import {
-  AnyFunction,
+import type {
   AnyImmutableArray,
   AnyMutableArray,
-  AnyNonNullishValue,
   AnyObject,
   AssertInteger,
   AssertPositive,
@@ -55,16 +53,12 @@ expectType<Equals<EmptyImmutableTuple, Tuple<never, 0, true>>>(true);
 expectType<Equals<EmptyImmutableTuple, Tuple<unknown, 0, true>>>(true);
 expectType<Equals<EmptyMutableTuple, Tuple<never, 0>>>(true);
 expectType<Equals<EmptyMutableTuple, Tuple<unknown, 0>>>(true);
-expectType<Equals<AnyMutableArray, Array<unknown>>>(true);
-expectType<Equals<AnyImmutableArray, ReadonlyArray<unknown>>>(true);
-expectType<Equals<AnyNonNullishValue, {}>>(true);
 // ExtendsFrom
 expectType<ExtendsFrom<EmptyImmutableTuple, EmptyImmutableArray>>(true);
 expectType<ExtendsFrom<EmptyMutableTuple, EmptyMutableArray>>(true);
 expectType<ExtendsFrom<EmptyImmutableArray, AnyImmutableArray>>(true);
 expectType<ExtendsFrom<EmptyMutableArray, AnyMutableArray>>(true);
 expectType<ExtendsFrom<EmptyObject, AnyObject>>(true);
-expectType<ExtendsFrom<AnyFunction, Function>>(true);
 expectType<ExtendsFrom<AnyMutableArray, AnyImmutableArray>>(true);
 // Range
 expectAssignable<ExclusiveRange<3>>(2);

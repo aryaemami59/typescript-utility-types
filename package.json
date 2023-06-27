@@ -2,10 +2,12 @@
   "name": "typescript-utility-types",
   "version": "1.0.0",
   "description": "",
-  "main": "script.ts",
+  "main": "index.d.ts",
   "type": "module",
   "scripts": {
-    "test": "npx tsd ."
+    "test": "tsd .",
+    "lint": "eslint . --ext ts",
+    "format": "eslint . --fix --ext ts"
   },
   "keywords": [],
   "author": "Arya Emami <aryaemami59@yahoo.com>",
@@ -15,6 +17,17 @@
     "tsd": "^0.28.1"
   },
   "devDependencies": {
+    "@types/node": "^20.3.1",
+    "@typescript-eslint/eslint-plugin": "^5.60.0",
+    "@typescript-eslint/parser": "^5.60.0",
+    "eslint": "^8.43.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-airbnb-typescript": "^17.0.0",
+    "eslint-config-prettier": "^8.8.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-prefer-arrow-functions": "^3.1.4",
+    "eslint-plugin-prettier": "^4.2.1",
+    "prettier": "^2.8.8",
     "typescript": "^5.1.3"
   }
 }

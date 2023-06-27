@@ -253,7 +253,20 @@ export type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>;
 };
 
-export type LowerOrUpperCase<T extends string> = Lowercase<T> | Uppercase<T>;
+export type LowerOrUpperCase<S extends string> = Lowercase<S> | Uppercase<S>;
+
+export type WithCapitalize<S extends string> = S | Capitalize<S>;
+export type WithUncapitalize<S extends string> = S | Uncapitalize<S>;
+export type WithLowercase<S extends string> = S | Lowercase<S>;
+export type WithUppercase<S extends string> = S | Uppercase<S>;
+
+export type AllCase<S extends string> =
+  | Lowercase<S>
+  | Uppercase<S>
+  | Capitalize<S>
+  | Uncapitalize<S>;
+
+export type WithAllCase<S extends string> = S | AllCase<S>;
 /**
  * Use with caution. Does not scale well.
  */

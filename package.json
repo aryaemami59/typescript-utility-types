@@ -1,0 +1,20 @@
+{
+  "name": "typescript-utility-types",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.ts",
+  "type": "module",
+  "scripts": {
+    "test": "npx tsd ."
+  },
+  "keywords": [],
+  "author": "Arya Emami <aryaemami59@yahoo.com>",
+  "license": "ISC",
+  "types": "./index.d.ts",
+  "dependencies": {
+    "tsd": "^0.28.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.1.3"
+  }
+}

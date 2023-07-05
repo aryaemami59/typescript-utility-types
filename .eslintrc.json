@@ -1,7 +1,7 @@
 {
   "env": {
-    "node": true,
     "browser": true,
+    "node": true,
     "shared-node-browser": true
   },
   "extends": [
@@ -54,6 +54,13 @@
         "selector": ["parameter"]
       }
     ],
+    "@typescript-eslint/no-duplicate-type-constituents": [2],
+    "@typescript-eslint/no-explicit-any": [
+      2,
+      {
+        "fixToUnknown": true
+      }
+    ],
     "@typescript-eslint/no-floating-promises": [0],
     "@typescript-eslint/no-throw-literal": [0],
     "no-console": [0],
@@ -73,8 +80,6 @@
         "parser": "typescript",
         "singleAttributePerLine": true
       }
-    ],
-    "@typescript-eslint/no-explicit-any": [2, { "fixToUnknown": true }],
-    "@typescript-eslint/no-duplicate-type-constituents": [2]
+    ]
   }
 }

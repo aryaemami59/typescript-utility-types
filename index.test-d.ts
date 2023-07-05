@@ -19,9 +19,9 @@ import type {
   Equals,
   ExclusiveRange,
   ExtendsFrom,
+  FixedLengthTuple,
   IndexOf,
   Length,
-  Tuple,
   TupleOfRangedLength,
   TupleUnion,
   XOR,
@@ -39,20 +39,23 @@ expectNotType<TupleUnion<["a", 2]>>([2, 2, 2]);
 expectNotType<TupleUnion<["a", 2]>>([2]);
 expectNotType<TupleUnion<["a", 2]>>([2, 2] as const);
 // Tuple
-expectAssignable<Tuple<string, 1 | 2>>(["a"]);
-expectAssignable<Tuple<string, 1 | 2>>(["a", "b"]);
-expectAssignable<Tuple<string, 1 | 2, true>>(["a", "b"]);
-expectNotType<Tuple<string, 1 | 2>>(["a", "b"] as const);
+expectAssignable<FixedLengthTuple<string, 1 | 2>>(["a"]);
+expectAssignable<FixedLengthTuple<string, 1 | 2>>(["a", "b"]);
+expectAssignable<FixedLengthTuple<string, 1 | 2, true>>(["a", "b"]);
+expectAssignable<FixedLengthTuple<string, 1 | 2, true>>(["a", "b"] as const);
+expectNotType<FixedLengthTuple<string, 1 | 2>>(["a", "b"] as const);
 // TupleOfRangedLength
 expectAssignable<TupleOfRangedLength<"a" | "b", 1, 3>>(["a"]);
 // Length
 expectType<Length<["a"]>>(1);
 expectType<Length<[]>>(0);
 // Equals
-expectType<Equals<EmptyImmutableTuple, Tuple<never, 0, true>>>(true);
-expectType<Equals<EmptyImmutableTuple, Tuple<unknown, 0, true>>>(true);
-expectType<Equals<EmptyMutableTuple, Tuple<never, 0>>>(true);
-expectType<Equals<EmptyMutableTuple, Tuple<unknown, 0>>>(true);
+expectType<Equals<EmptyImmutableTuple, FixedLengthTuple<never, 0, true>>>(true);
+expectType<Equals<EmptyImmutableTuple, FixedLengthTuple<unknown, 0, true>>>(
+  true
+);
+expectType<Equals<EmptyMutableTuple, FixedLengthTuple<never, 0>>>(true);
+expectType<Equals<EmptyMutableTuple, FixedLengthTuple<unknown, 0>>>(true);
 // ExtendsFrom
 expectType<ExtendsFrom<EmptyImmutableTuple, EmptyImmutableArray>>(true);
 expectType<ExtendsFrom<EmptyMutableTuple, EmptyMutableArray>>(true);

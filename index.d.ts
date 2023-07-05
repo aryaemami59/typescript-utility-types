@@ -2,7 +2,8 @@ export type AnyObject = Record<string, unknown>;
 /**
  * Does not have access to mutable methods like `push` and `pop`.
  *
- * same as {@link ReadonlyArray<unknown>}
+ * same as `ReadonlyArray<unknown>`
+ * @see {@link ReadonlyArray}
  */
 export type AnyImmutableArray = readonly unknown[];
 /**
@@ -10,7 +11,9 @@ export type AnyImmutableArray = readonly unknown[];
  *
  * extends from {@link AnyImmutableArray}
  *
- * same as {@link Array<unknown>}
+ * same as `Array<unknown>`
+ *
+ * @see {@link Array}
  */
 export type AnyMutableArray = unknown[];
 /**
@@ -31,13 +34,15 @@ export type AnyNonNullishValue = NonNullable<unknown>;
  * It accepts any other string but also gives "specific string" in intellisense.
  * ```
  */
-export type AnyString = string & AnyNonNullishValue;
+export type AnyString = string & Record<never, never>;
 /**
  * Can be used to generate intellisense for types that are a union of some numbers and any number.
  *
- * works similar to {@link AnyString}
+ * works similar to `AnyString`
+ *
+ * @see {@link AnyString}
  */
-export type AnyNumber = number & AnyNonNullishValue;
+export type AnyNumber = number & Record<never, never>;
 /**
  * extends from {@link AnyObject}
  */
@@ -76,7 +81,10 @@ export type EmptyMutableTuple = [];
  * ```
  */
 export type EmptyImmutableTuple = readonly [];
-
+/**
+ * Internal helper for `ExclusiveRange`.
+ * @see ExclusiveRange
+ */
 type Enumerate<
   TNumber extends number,
   Acc extends number[] = []
@@ -114,7 +122,10 @@ export type AssertInteger<TNumber extends number> = number extends TNumber
   : `${TNumber}` extends `${string}.${string}`
   ? never
   : TNumber;
-
+/**
+ * Internal Helper for `Tuple`.
+ * @see FixedLengthTuple
+ */
 type TupleOf<
   TElement,
   TLength extends number,
@@ -142,13 +153,14 @@ type TupleOf<
  * TLength cannot be a negative number. It can also be a union which will return union of tuples.
  * @example
  * ```
- * const example: Tuple<string, 1 | 2> = ["a"];
- * const example: Tuple<string, 1 | 2> = ["a", "b"];
- * const example: Tuple<string, 1 | 2, true> = ["a", "b"];
- * const example: Tuple<string, 1 | 2> = ["a", "b"] as const; // Results in an error.
+ * const foo1: Tuple<string, 1 | 2> = ["a"]; // Pass
+ * const foo2: Tuple<string, 1 | 2> = ["a", "b"]; // Pass
+ * const foo3: Tuple<string, 1 | 2, true> = ["a", "b"]; // Pass
+ *
+ * const bar1: Tuple<string, 1 | 2> = ["a", "b"] as const; // Fail
  * ```
  */
-export type Tuple<
+export type FixedLengthTuple<
   TElement,
   TLength extends number,
   TReadonly extends boolean = false
@@ -159,40 +171,46 @@ export type Tuple<
     ? TupleOf<TElement, TLength, readonly [], TReadonly>
     : TupleOf<TElement, TLength, [], TReadonly>
   : never;
-
 /**
  * Returns a tuple where the elements can be repeated and the order of the elements will not matter.
  *
  * The length of the tuple however cannot change.
  * @example
  * ```
- * const example: TupleUnion<["a", 2]> = ["a", 2];
- * const example: TupleUnion<["a", 2]> = [2, "a"];
- * const example: TupleUnion<["a", 2]> = ["a", "a"];
- * const example: TupleUnion<["a", 2]> = [2, 2];
- * const example: TupleUnion<readonly ["a", 2]> = [2, 2] as const;
- * const example: TupleUnion<readonly ["a", 2]> = [2, 2];
- * const example: TupleUnion<["a", 2]> = [2, 2, 2]; // Results in an error.
- * const example: TupleUnion<["a", 2]> = [2]; // Results in an error.
- * const example: TupleUnion<["a", 2]> = [2, 2] as const; // Results in an error since the TTuple is not readonly the resulting tuple cannot be readonly either.
+ * const foo1: TupleUnion<["a", 2]> = ["a", 2]; // Pass
+ * const foo2: TupleUnion<["a", 2]> = [2, "a"]; // Pass
+ * const foo3: TupleUnion<["a", 2]> = ["a", "a"]; // Pass
+ * const foo4: TupleUnion<["a", 2]> = [2, 2]; // Pass
+ * const foo5: TupleUnion<readonly ["a", 2]> = [2, 2] as const; // Pass
+ * const foo6: TupleUnion<readonly ["a", 2]> = [2, 2]; // Pass
+ *
+ * const bar1: TupleUnion<["a", 2]> = [2, 2, 2]; // Fail
+ * const bar2: TupleUnion<["a", 2]> = [2]; // Fail
+ * const bar3: TupleUnion<["a", 2]> = [2, 2] as const; // Fail since the TTuple is not readonly the resulting tuple cannot be readonly either.
  * ```
  */
 export type TupleUnion<TTuple extends AnyImmutableArray> =
   TTuple extends readonly [...[...infer R]]
-    ? Tuple<R[IndexOf<R>], TTuple["length"], IsReadOnly<TTuple>>
+    ? FixedLengthTuple<R[IndexOf<R>], TTuple["length"], IsReadOnly<TTuple>>
     : never;
-
+/**
+ * Get the length of an array as a numeric literal.
+ */
 export type Length<T extends readonly unknown[]> = T["length"];
 
 export type TupleOfMinLength<
   T,
   TMin extends number
-> = TMin extends AssertPositive<TMin> ? [...Tuple<T, TMin>, ...T[]] : never;
+> = TMin extends AssertPositive<TMin>
+  ? [...FixedLengthTuple<T, TMin>, ...T[]]
+  : never;
 
 export type TupleOfMaxLength<
   T,
   TMax extends number
-> = TMax extends AssertPositive<TMax> ? Partial<[...Tuple<T, TMax>]> : never;
+> = TMax extends AssertPositive<TMax>
+  ? Partial<[...FixedLengthTuple<T, TMax>]>
+  : never;
 /**
  * Gives tuple of exclusive range.
  *
@@ -205,7 +223,7 @@ export type TupleOfRangedLength<
   TMin extends number,
   TMax extends number
 > = ExclusiveRange<TMax, TMin> extends number
-  ? Tuple<TElement, ExclusiveRange<TMax, TMin>>
+  ? FixedLengthTuple<TElement, ExclusiveRange<TMax, TMin>>
   : never;
 
 /**
@@ -246,12 +264,24 @@ export type RecursiveImmutable<T> = {
 };
 
 export type RecursivePartial<T> = {
-  [P in keyof T]?: RecursivePartial<T[P]>;
+  [Key in keyof T]?: T extends ObjectOrArray
+    ? RecursivePartial<T[Key]>
+    : T[Key];
 };
 
 export type RecursiveRequired<T> = {
   [P in keyof T]-?: RecursiveRequired<T[P]>;
 };
+
+export type FirstLetter<S extends string> = S extends `${infer F}${string}`
+  ? F
+  : never;
+
+// export type ObjectKeys = <const Obj extends AnyNonNullishValue>(
+//   obj: Obj
+// ) => (keyof Obj)[];
+
+export type With<T, U> = T | U;
 
 export type LowerOrUpperCase<S extends string> = Lowercase<S> | Uppercase<S>;
 
@@ -285,3 +315,19 @@ export type IsReadOnly<T> = Readonly<T> extends T ? true : false;
  * Get a union type of the indices of an array.
  */
 export type IndexOf<T extends AnyImmutableArray> = ExclusiveRange<T["length"]>;
+
+export type BetterExclude<T, U extends T> = Exclude<T, U>;
+
+export type BetterExtract<T, U extends T> = Extract<T, U>;
+
+export type BetterOmit<T, U extends keyof T> = Omit<T, U>;
+/**
+ * Useful to flatten the type output to improve type hints shown in editors. And also to transform an interface into a type to aide with assignability.
+ */
+export type Simplify<T> = {
+  [KeyType in keyof T]: T[KeyType];
+} & AnyNonNullishValue;
+
+export type LiteralUnion<T, TBase extends number | string> =
+  | T
+  | (TBase & Record<never, never>);

@@ -1,7 +1,7 @@
 {
-  "name": "ts-utils",
+  "name": "ts-util-types",
   "version": "1.0.0",
-  "description": "",
+  "description": "This is a typescript utility package made by Arya Emami",
   "main": "index.d.ts",
   "type": "module",
   "scripts": {
@@ -10,7 +10,7 @@
     "format": "eslint . --fix --ext ts"
   },
   "keywords": [],
-  "author": "Arya Emami <aryaemami59@yahoo.com>",
+  "author": "Arya Emami <aryaemami59@yahoo.com> (https://github.com/aryaemami59)",
   "license": "ISC",
   "types": "./index.d.ts",
   "dependencies": {

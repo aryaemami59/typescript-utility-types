@@ -1,3 +1,6 @@
+/**
+ * Matches any object
+ */
 export type AnyObject = Record<string, unknown>;
 /**
  * Does not have access to mutable methods like `push` and `pop`.
@@ -276,10 +279,6 @@ export type RecursiveRequired<T> = {
 export type FirstLetter<S extends string> = S extends `${infer F}${string}`
   ? F
   : never;
-
-// export type ObjectKeys = <const Obj extends AnyNonNullishValue>(
-//   obj: Obj
-// ) => (keyof Obj)[];
 
 export type With<T, U> = T | U;
 

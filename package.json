@@ -1,9 +1,17 @@
 {
-  "name": "ts-util-types",
+  "name": "@aryaemami59/ts-util-types",
   "version": "1.0.0",
-  "description": "This is a typescript utility package made by Arya Emami",
+  "description": "This is a typescript utility types package made by Arya Emami",
   "main": "index.d.ts",
   "type": "module",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aryaemami59/typescript-utility-types"
+  },
+  "files": [
+    "index.d.ts"
+  ],
   "scripts": {
     "test": "tsd .",
     "lint": "eslint . --ext ts",

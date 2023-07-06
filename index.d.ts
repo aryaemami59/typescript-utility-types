@@ -367,7 +367,7 @@ export type ObjectEntries<
   TObj extends AnyObject,
   K extends keyof TObj = keyof TObj
 > = TObj extends { [X in K]: TObj[X] }
-  ? readonly ValuesOf<{
-      readonly [X in K]: readonly [X, Pick<TObj, X>[X]];
+  ? ValuesOf<{
+      [X in K]: [X, Pick<TObj, X>[X]];
     }>[]
   : never;

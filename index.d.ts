@@ -240,7 +240,7 @@ export type ObjectOrArray = AnyMutableArray | AnyObject;
 /**
  * Checks if 2 types are equal.
  */
-export type Equals<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
+export type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
   T
 >() => T extends Y ? 1 : 2
   ? true
@@ -326,7 +326,48 @@ export type BetterOmit<T, U extends keyof T> = Omit<T, U>;
 export type Simplify<T> = {
   [KeyType in keyof T]: T[KeyType];
 } & AnyNonNullishValue;
-
+/**
+ * Allows creating a union type by combining primitive types and literal types without sacrificing auto-completion in IDEs for the literal type part of the union.
+ */
 export type LiteralUnion<T, TBase extends number | string> =
   | T
   | (TBase & Record<never, never>);
+/**
+ * Made for testing purposes.
+ */
+export type Expect<T extends true> = T;
+/**
+ * Convert a union type to an intersection type.
+ *
+ * U must be a union type.
+ *
+ * If U is a union of only primitives it will result in never. U must include at least one Composite type. U cannot contain more than one primitive type.
+ */
+export type UnionToIntersection<U> = (
+  U extends unknown ? (x: U) => void : never
+) extends (x: infer I) => void
+  ? I
+  : never;
+/**
+ * Get the values of an object.
+ *
+ * TObj must be a valid object.
+ *
+ * You can specify which keys to get the values from.
+ */
+export type ValuesOf<
+  TObj extends AnyObject,
+  K extends keyof TObj = keyof TObj
+> = TObj[K];
+/**
+ * Get Object entries
+ * @see {@link Object.entries}
+ */
+export type ObjectEntries<
+  TObj extends AnyObject,
+  K extends keyof TObj = keyof TObj
+> = TObj extends { [X in K]: TObj[X] }
+  ? readonly ValuesOf<{
+      readonly [X in K]: readonly [X, Pick<TObj, X>[X]];
+    }>[]
+  : never;

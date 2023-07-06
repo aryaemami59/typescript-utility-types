@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "esModuleInterop": true,
+    "extendedDiagnostics": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
     "module": "ESNext",
@@ -15,6 +16,7 @@
     "strict": true,
     "strictFunctionTypes": true,
     "strictNullChecks": true,
+    "strictPropertyInitialization": true,
     "target": "ESNext",
     "useDefineForClassFields": true,
     "useUnknownInCatchVariables": true

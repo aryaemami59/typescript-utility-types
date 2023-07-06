@@ -1,9 +1,5 @@
 {
-  "env": {
-    "browser": true,
-    "node": true,
-    "shared-node-browser": true
-  },
+  "env": { "node": true },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -23,15 +19,22 @@
     "sourceType": "module",
     "tsconfigRootDir": "./"
   },
-  "plugins": ["@typescript-eslint", "prefer-arrow-functions", "prettier"],
+  "plugins": [
+    "@typescript-eslint",
+    "prefer-arrow-functions",
+    "prettier",
+    "simple-import-sort"
+  ],
   "root": true,
   "rules": {
     "@typescript-eslint/consistent-type-definitions": [2, "type"],
     "@typescript-eslint/consistent-type-imports": [2],
+    "@typescript-eslint/explicit-member-accessibility": [2],
     "@typescript-eslint/naming-convention": [
       2,
       {
         "format": ["PascalCase"],
+        "leadingUnderscore": "allow",
         "selector": ["typeLike"]
       },
       {
@@ -41,6 +44,7 @@
       },
       {
         "format": ["camelCase", "UPPER_CASE"],
+        "leadingUnderscore": "allowDouble",
         "selector": ["variable"],
         "types": ["array", "boolean", "number", "string"]
       },
@@ -49,27 +53,14 @@
         "modifiers": ["requiresQuotes"],
         "selector": ["objectLiteralProperty"]
       },
-      {
-        "format": ["camelCase"],
-        "selector": ["parameter"]
-      }
-    ],
-    "@typescript-eslint/no-duplicate-type-constituents": [2],
-    "@typescript-eslint/no-explicit-any": [
-      2,
-      {
-        "fixToUnknown": true
-      }
+      { "format": ["camelCase"], "selector": ["parameter"] }
     ],
     "@typescript-eslint/no-floating-promises": [0],
     "@typescript-eslint/no-throw-literal": [0],
+    "max-classes-per-file": [2, { "max": 5 }],
     "no-console": [0],
-    "no-param-reassign": [
-      2,
-      {
-        "props": false
-      }
-    ],
+    "no-param-reassign": [2, { "props": false }],
+    "no-underscore-dangle": [2, { "allow": ["__filename", "__dirname"] }],
     "prefer-arrow-functions/prefer-arrow-functions": [2],
     "prettier/prettier": [
       2,
@@ -80,6 +71,8 @@
         "parser": "typescript",
         "singleAttributePerLine": true
       }
-    ]
+    ],
+    "simple-import-sort/exports": [2],
+    "simple-import-sort/imports": [2]
   }
 }

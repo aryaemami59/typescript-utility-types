@@ -5,6 +5,7 @@ import {
   expectType,
   printType,
 } from "tsd";
+
 import type {
   AnyImmutableArray,
   AnyMutableArray,
@@ -16,7 +17,7 @@ import type {
   EmptyMutableArray,
   EmptyMutableTuple,
   EmptyObject,
-  Equals,
+  Equal,
   ExclusiveRange,
   ExtendsFrom,
   FixedLengthTuple,
@@ -50,12 +51,12 @@ expectAssignable<TupleOfRangedLength<"a" | "b", 1, 3>>(["a"]);
 expectType<Length<["a"]>>(1);
 expectType<Length<[]>>(0);
 // Equals
-expectType<Equals<EmptyImmutableTuple, FixedLengthTuple<never, 0, true>>>(true);
-expectType<Equals<EmptyImmutableTuple, FixedLengthTuple<unknown, 0, true>>>(
+expectType<Equal<EmptyImmutableTuple, FixedLengthTuple<never, 0, true>>>(true);
+expectType<Equal<EmptyImmutableTuple, FixedLengthTuple<unknown, 0, true>>>(
   true
 );
-expectType<Equals<EmptyMutableTuple, FixedLengthTuple<never, 0>>>(true);
-expectType<Equals<EmptyMutableTuple, FixedLengthTuple<unknown, 0>>>(true);
+expectType<Equal<EmptyMutableTuple, FixedLengthTuple<never, 0>>>(true);
+expectType<Equal<EmptyMutableTuple, FixedLengthTuple<unknown, 0>>>(true);
 // ExtendsFrom
 expectType<ExtendsFrom<EmptyImmutableTuple, EmptyImmutableArray>>(true);
 expectType<ExtendsFrom<EmptyMutableTuple, EmptyMutableArray>>(true);

@@ -382,8 +382,11 @@ export type HeaderKey =
   | "Cookie"
   | "X-Custom-Header";
 
-export type BetterRequestInit = RequestInit &
-  Partial<{
-    method: RequestMethod;
-    headers: HeadersInit & Partial<Record<HeaderKey, string>>;
-  }>;
+export type AddToRequestInit = Partial<{
+  method: RequestMethod;
+  headers: HeadersInit & Partial<Record<HeaderKey, string>>;
+}>;
+
+export type BetterRequestInit = RequestInit & AddToRequestInit;
+
+export type NodeFetchRequestInit = RequestInit & AddToRequestInit;

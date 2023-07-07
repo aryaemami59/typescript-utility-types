@@ -371,3 +371,19 @@ export type ObjectEntries<
       [X in K]: [X, Pick<TObj, X>[X]];
     }>[]
   : never;
+// Fetch related
+export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
+
+export type HeaderKey =
+  | "Accept"
+  | "Content-Type"
+  | "Authorization"
+  | "User-Agent"
+  | "Cookie"
+  | "X-Custom-Header";
+
+export type BetterRequestInit = RequestInit &
+  Partial<{
+    method: RequestMethod;
+    headers: HeadersInit & Partial<Record<HeaderKey, string>>;
+  }>;

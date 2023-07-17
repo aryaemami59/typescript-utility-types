@@ -1,5 +1,5 @@
 {
-  "env": { "node": true },
+  "env": { "node": true, "es2024": true },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -69,7 +69,8 @@
         "bracketSameLine": true,
         "endOfLine": "auto",
         "parser": "typescript",
-        "singleAttributePerLine": true
+        "singleAttributePerLine": true,
+        "trailingComma": "es5"
       }
     ],
     "simple-import-sort/exports": [2],

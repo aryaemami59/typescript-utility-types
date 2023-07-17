@@ -1,5 +1,6 @@
 /**
- * Matches any object
+ * Matches any simple object.
+ * Does not match arrays or functions.
  */
 export type AnyObject = Record<string, unknown>;
 /**
@@ -7,6 +8,8 @@ export type AnyObject = Record<string, unknown>;
  *
  * same as `ReadonlyArray<unknown>`
  * @see {@link ReadonlyArray}
+ * @see {@link Array.pop}
+ * @see {@link Array.push}
  */
 export type AnyImmutableArray = readonly unknown[];
 /**
@@ -17,6 +20,8 @@ export type AnyImmutableArray = readonly unknown[];
  * same as `Array<unknown>`
  *
  * @see {@link Array}
+ * @see {@link Array.pop}
+ * @see {@link Array.push}
  */
 export type AnyMutableArray = unknown[];
 /**
@@ -33,8 +38,7 @@ export type AnyNonNullishValue = NonNullable<unknown>;
  * @example
  * ```
  * const example: AnyString | "specific string" = "specific string";
- * const example: AnyString | "specific string" = "any other string";
- * It accepts any other string but also gives "specific string" in intellisense.
+ * const example: AnyString | "specific string" = "any other string"; // It accepts any other string but also gives "specific string" in intellisense.
  * ```
  */
 export type AnyString = string & Record<never, never>;
@@ -65,32 +69,22 @@ export type EmptyImmutableArray = readonly never[];
 /**
  * extends from {@link EmptyMutableArray}
  *
- * same as
- * ```
- * Tuple<never, 0>
- * or:
- * Tuple<unknown, 0>
- * ```
+ * same as `FixedLengthTuple<never, 0>` or `FixedLengthTuple<unknown, 0>`
  */
 export type EmptyMutableTuple = [];
 /**
  * extends from {@link EmptyImmutableArray}
  *
- * same as
- * ```
- * Tuple<never, 0, true>
- * or:
- * Tuple<unknown, 0, true>
- * ```
+ * same as `FixedLengthTuple<never, 0, true>` or `FixedLengthTuple<unknown, 0, true>`
  */
 export type EmptyImmutableTuple = readonly [];
 /**
  * Internal helper for `ExclusiveRange`.
- * @see ExclusiveRange
+ * @see {@link ExclusiveRange}
  */
 type Enumerate<
   TNumber extends number,
-  Acc extends number[] = []
+  Acc extends number[] = [],
 > = TNumber extends AssertPositive<TNumber>
   ? Acc["length"] extends TNumber
     ? Acc[number]
@@ -105,7 +99,7 @@ type Enumerate<
  */
 export type ExclusiveRange<
   TMax extends number,
-  TMin extends number = 0
+  TMin extends number = 0,
 > = TMin extends AssertPositive<TMin>
   ? Exclude<Enumerate<TMax>, Enumerate<TMin>>
   : never;
@@ -117,6 +111,8 @@ export type AssertPositive<TNumber extends number> = number extends TNumber
   : `${TNumber}` extends `-${string}`
   ? never
   : TNumber;
+
+export type Integer<T extends number> = `${T}` extends `${bigint}` ? T : never;
 /**
  * Checks if a number is an integer. TNumber could be a union type but must be a literal number type.
  */
@@ -126,14 +122,14 @@ export type AssertInteger<TNumber extends number> = number extends TNumber
   ? never
   : TNumber;
 /**
- * Internal Helper for `Tuple`.
- * @see FixedLengthTuple
+ * Internal Helper for `FixedLengthTuple`.
+ * @see {@link FixedLengthTuple}
  */
 type TupleOf<
   TElement,
   TLength extends number,
   TArray extends readonly unknown[],
-  TReadonly extends boolean = false
+  TReadonly extends boolean = false,
 > = TArray["length"] extends TLength
   ? TArray
   : TReadonly extends true
@@ -166,7 +162,7 @@ type TupleOf<
 export type FixedLengthTuple<
   TElement,
   TLength extends number,
-  TReadonly extends boolean = false
+  TReadonly extends boolean = false,
 > = TLength extends AssertPositive<TLength>
   ? number extends TLength
     ? readonly TElement[]
@@ -203,14 +199,14 @@ export type Length<T extends readonly unknown[]> = T["length"];
 
 export type TupleOfMinLength<
   T,
-  TMin extends number
+  TMin extends number,
 > = TMin extends AssertPositive<TMin>
   ? [...FixedLengthTuple<T, TMin>, ...T[]]
   : never;
 
 export type TupleOfMaxLength<
   T,
-  TMax extends number
+  TMax extends number,
 > = TMax extends AssertPositive<TMax>
   ? Partial<[...FixedLengthTuple<T, TMax>]>
   : never;
@@ -224,7 +220,7 @@ export type TupleOfMaxLength<
 export type TupleOfRangedLength<
   TElement,
   TMin extends number,
-  TMax extends number
+  TMax extends number,
 > = ExclusiveRange<TMax, TMin> extends number
   ? FixedLengthTuple<TElement, ExclusiveRange<TMax, TMin>>
   : never;
@@ -241,7 +237,7 @@ export type ObjectOrArray = AnyMutableArray | AnyObject;
  * Checks if 2 types are equal.
  */
 export type Equal<X, Y> = (<T>() => T extends X ? 1 : 2) extends <
-  T
+  T,
 >() => T extends Y ? 1 : 2
   ? true
   : false;
@@ -297,7 +293,7 @@ export type AllCase<S extends string> =
 
 export type WithAllCase<S extends string> = S | AllCase<S>;
 /**
- * Use with caution. Does not scale well.
+ * __Use with caution. Does not scale well.__
  */
 export type AnyCase<T extends string> = string extends T
   ? string
@@ -308,6 +304,7 @@ export type AnyCase<T extends string> = string extends T
   : "";
 /**
  * Checks to see if something is readonly.
+ * @see {@link Readonly}
  */
 export type IsReadOnly<T> = Readonly<T> extends T ? true : false;
 /**
@@ -357,7 +354,7 @@ export type UnionToIntersection<U> = (
  */
 export type ValuesOf<
   TObj extends AnyObject,
-  K extends keyof TObj = keyof TObj
+  K extends keyof TObj = keyof TObj,
 > = TObj[K];
 /**
  * Get Object entries
@@ -365,7 +362,7 @@ export type ValuesOf<
  */
 export type ObjectEntries<
   TObj extends AnyObject,
-  K extends keyof TObj = keyof TObj
+  K extends keyof TObj = keyof TObj,
 > = TObj extends { [X in K]: TObj[X] }
   ? ValuesOf<{
       [X in K]: [X, Pick<TObj, X>[X]];
@@ -375,18 +372,31 @@ export type ObjectEntries<
 export type RequestMethod = "GET" | "POST" | "PUT" | "DELETE" | "PATCH";
 
 export type HeaderKey =
-  | "Accept"
   | "Content-Type"
   | "Authorization"
   | "User-Agent"
+  | "Cache-Control"
   | "Cookie"
-  | "X-Custom-Header";
+  | "Origin"
+  | "Referer";
+
+export type AcceptHeaderValue =
+  | "application/json"
+  | "application/xml"
+  | "text/plain"
+  | "text/html"
+  | "image/jpeg"
+  | "image/png"
+  | "audio/mp3"
+  | "video/mp4"
+  | "*/*"
+  | "application/*";
 
 export type AddToRequestInit = Partial<{
   method: RequestMethod;
-  headers: HeadersInit & Partial<Record<HeaderKey, string>>;
+  headers: HeadersInit &
+    Record<HeaderKey, string> &
+    Record<"Accept", AcceptHeaderValue>;
 }>;
 
 export type BetterRequestInit = RequestInit & AddToRequestInit;
-
-export type NodeFetchRequestInit = RequestInit & AddToRequestInit;

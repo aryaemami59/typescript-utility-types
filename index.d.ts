@@ -310,7 +310,13 @@ export type IsReadOnly<T> = Readonly<T> extends T ? true : false;
 /**
  * Get a union type of the indices of an array.
  */
-export type IndexOf<T extends AnyImmutableArray> = ExclusiveRange<T["length"]>;
+export type IndexOf<T extends AnyImmutableArray> = Extract<
+  keyof T,
+  `${number}`
+> extends `${infer N extends number}`
+  ? N
+  : never;
+// export type IndexOf<T extends AnyImmutableArray> = ExclusiveRange<T["length"]>;
 
 export type BetterExclude<T, U extends T> = Exclude<T, U>;
 
@@ -400,3 +406,7 @@ export type AddToRequestInit = Partial<{
 }>;
 
 export type BetterRequestInit = RequestInit & AddToRequestInit;
+
+export type StringToNumber<T> = T extends `${infer N extends number}`
+  ? N
+  : never;

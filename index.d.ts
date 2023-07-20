@@ -82,7 +82,7 @@ export type EmptyImmutableTuple = readonly [];
  * Internal helper for `ExclusiveRange`.
  * @see {@link ExclusiveRange}
  */
-type Enumerate<
+export type Enumerate<
   TNumber extends number,
   Acc extends number[] = [],
 > = TNumber extends AssertPositive<TNumber>

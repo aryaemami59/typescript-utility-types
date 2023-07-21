@@ -436,4 +436,4 @@ export type Join<
       infer U extends JoinableItem,
     ]
   ? `${Join<H, D>}${D}${U}`
-  : string;
+  : ",";

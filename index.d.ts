@@ -369,9 +369,9 @@ export type ValuesOf<
 export type ObjectEntries<
   TObj extends AnyObject,
   K extends keyof TObj = keyof TObj,
-> = TObj extends { [X in K]: TObj[X] }
-  ? ValuesOf<{
-      [X in K]: [X, Pick<TObj, X>[X]];
+> = TObj extends { readonly [X in K]: TObj[X] }
+  ? readonly ValuesOf<{
+      readonly [X in K]: readonly [X, Pick<TObj, X>[X]];
     }>[]
   : never;
 // Fetch related
@@ -410,3 +410,30 @@ export type BetterRequestInit = RequestInit & AddToRequestInit;
 export type StringToNumber<T> = T extends `${infer N extends number}`
   ? N
   : never;
+
+export type JoinableItem =
+  | string
+  | number
+  | bigint
+  | boolean
+  | undefined
+  | null;
+
+export type Join<
+  T extends readonly JoinableItem[],
+  D extends string,
+> = T extends []
+  ? ""
+  : T extends readonly [JoinableItem?]
+  ? `${T[0]}`
+  : T extends readonly [
+      infer F extends JoinableItem,
+      ...infer R extends readonly JoinableItem[],
+    ]
+  ? `${F}${D}${Join<R, D>}`
+  : T extends readonly [
+      ...infer H extends readonly JoinableItem[],
+      infer U extends JoinableItem,
+    ]
+  ? `${Join<H, D>}${D}${U}`
+  : string;

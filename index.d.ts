@@ -421,7 +421,7 @@ export type JoinableItem =
 
 export type Join<
   T extends readonly JoinableItem[],
-  D extends string,
+  D extends string = ",",
 > = T extends []
   ? ""
   : T extends readonly [JoinableItem?]

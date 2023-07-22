@@ -407,6 +407,13 @@ export type AddToRequestInit = Partial<{
 
 export type BetterRequestInit = RequestInit & AddToRequestInit;
 
+export type StringToType<
+  T,
+  U extends JoinableItem,
+> = T extends `${infer N extends U}` ? N : never;
+
+export type StringToBoolean<T> = StringToType<T, boolean>;
+
 export type StringToNumber<T> = T extends `${infer N extends number}`
   ? N
   : never;
@@ -436,4 +443,13 @@ export type Join<
       infer U extends JoinableItem,
     ]
   ? `${Join<H, D>}${D}${U}`
-  : ",";
+  : string;
+
+export type Split<
+  S extends string,
+  D extends string,
+> = S extends `${infer H}${D}${infer T}`
+  ? [H, ...Split<T, D>]
+  : S extends D
+  ? []
+  : [S];

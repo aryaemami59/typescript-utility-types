@@ -418,6 +418,15 @@ export type StringToNumber<T> = T extends `${infer N extends number}`
   ? N
   : never;
 
+export type Primitive =
+  | null
+  | undefined
+  | string
+  | number
+  | boolean
+  | symbol
+  | bigint;
+
 export type JoinableItem =
   | string
   | number

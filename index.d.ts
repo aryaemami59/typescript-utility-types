@@ -462,3 +462,9 @@ export type Split<
   : S extends D
   ? []
   : [S];
+
+export type OmitIndexSignature<T> = {
+  [KeyType in keyof T as AnyNonNullishValue extends Record<KeyType, unknown>
+    ? never
+    : KeyType]: T[KeyType];
+};

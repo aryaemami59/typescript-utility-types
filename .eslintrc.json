@@ -5,9 +5,8 @@
     "plugin:@typescript-eslint/eslint-recommended",
     "airbnb-base",
     "airbnb-typescript/base",
-    "plugin:@typescript-eslint/recommended",
-    "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "plugin:@typescript-eslint/strict",
+    "plugin:@typescript-eslint/strict-type-checked",
+    "plugin:@typescript-eslint/stylistic-type-checked",
     "plugin:prettier/recommended"
   ],
   "ignorePatterns": ["node_modules", ".vscode"],
@@ -29,6 +28,9 @@
   "rules": {
     "@typescript-eslint/consistent-type-definitions": [2, "type"],
     "@typescript-eslint/consistent-type-imports": [2],
+    "@typescript-eslint/consistent-type-exports": [2],
+    "@typescript-eslint/promise-function-async": [2],
+    "@typescript-eslint/prefer-readonly": [2],
     "@typescript-eslint/explicit-member-accessibility": [2],
     "@typescript-eslint/naming-convention": [
       2,
@@ -55,11 +57,7 @@
       },
       { "format": ["camelCase"], "selector": ["parameter"] }
     ],
-    "@typescript-eslint/no-floating-promises": [0],
-    "@typescript-eslint/no-throw-literal": [0],
     "max-classes-per-file": [2, { "max": 5 }],
-    "no-console": [0],
-    "no-param-reassign": [2, { "props": false }],
     "no-underscore-dangle": [2, { "allow": ["__filename", "__dirname"] }],
     "prefer-arrow-functions/prefer-arrow-functions": [2],
     "prettier/prettier": [

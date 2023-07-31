@@ -1,5 +1,6 @@
 /**
  * Matches any simple object.
+ * Resembles a Dictionary in Python.
  * Does not match arrays or functions.
  */
 export type AnyObject = Record<string, unknown>;

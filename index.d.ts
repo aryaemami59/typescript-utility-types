@@ -19,7 +19,6 @@ export type AnyImmutableArray = readonly unknown[];
  * extends from {@link AnyImmutableArray}
  *
  * same as `Array<unknown>`
- *
  * @see {@link Array}
  * @see {@link Array.pop}
  * @see {@link Array.push}
@@ -35,7 +34,6 @@ export type AnyFunction = (...args: unknown[]) => unknown;
 export type AnyNonNullishValue = NonNullable<unknown>;
 /**
  * Can be used to generate intellisense for types that are a union of some strings and any string.
- *
  * @example
  * ```
  * const example: AnyString | "specific string" = "specific string";
@@ -47,7 +45,6 @@ export type AnyString = string & Record<never, never>;
  * Can be used to generate intellisense for types that are a union of some numbers and any number.
  *
  * works similar to `AnyString`
- *
  * @see {@link AnyString}
  */
 export type AnyNumber = number & Record<never, never>;

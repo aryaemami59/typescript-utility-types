@@ -7,6 +7,7 @@
     "airbnb-typescript/base",
     "plugin:@typescript-eslint/strict-type-checked",
     "plugin:@typescript-eslint/stylistic-type-checked",
+    "plugin:jsdoc/recommended-typescript",
     "plugin:prettier/recommended"
   ],
   "ignorePatterns": ["node_modules", ".vscode"],
@@ -22,6 +23,7 @@
     "@typescript-eslint",
     "prefer-arrow-functions",
     "prettier",
+    "jsdoc",
     "simple-import-sort"
   ],
   "root": true,

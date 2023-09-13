@@ -3,7 +3,7 @@
  * Resembles a Dictionary in Python.
  * Does not match arrays or functions.
  */
-export type AnyObject = Record<string, unknown>;
+export type UnknownObject = Record<string, unknown>;
 /**
  * Does not have access to mutable methods like `push` and `pop`.
  *
@@ -12,22 +12,22 @@ export type AnyObject = Record<string, unknown>;
  * @see {@link Array.pop}
  * @see {@link Array.push}
  */
-export type AnyImmutableArray = readonly unknown[];
+export type UnknownImmutableArray = readonly unknown[];
 /**
  * has access to mutable methods like `push` and `pop`.
  *
- * extends from {@link AnyImmutableArray}
+ * extends from {@link UnknownImmutableArray}
  *
  * same as `Array<unknown>`
  * @see {@link Array}
  * @see {@link Array.pop}
  * @see {@link Array.push}
  */
-export type AnyMutableArray = unknown[];
+export type UnknownMutableArray = unknown[];
 /**
  * extends from {@link Function}
  */
-export type AnyFunction = (...args: unknown[]) => unknown;
+export type UnknownFunction = (...args: unknown[]) => unknown;
 /**
  * same as `{}`
  */
@@ -49,19 +49,19 @@ export type AnyString = string & Record<never, never>;
  */
 export type AnyNumber = number & Record<never, never>;
 /**
- * extends from {@link AnyObject}
+ * extends from {@link UnknownObject}
  */
 export type EmptyObject = Record<string, never>;
 /**
  * This array has access to mutable methods like `push` and `pop` but it cannot use them.
  *
- * extends from {@link AnyMutableArray}
+ * extends from {@link UnknownMutableArray}
  */
 export type EmptyMutableArray = never[];
 /**
  * This array does not have access to mutable methods like `push` and `pop`.
  *
- * extends from {@link AnyImmutableArray}
+ * extends from {@link UnknownImmutableArray}
  */
 export type EmptyImmutableArray = readonly never[];
 /**
@@ -90,10 +90,8 @@ export type Enumerate<
   : never;
 /**
  * Specify exclusive range of numbers starting from 0.
- *
- * TMax cannot be higher than 999.
- *
- * TMin is the starting value, it cannot be a negative number.
+ * @template TMax - Cannot be higher than 999.
+ * @template TMin - The starting value, it cannot be a negative number.
  */
 export type ExclusiveRange<
   TMax extends number,
@@ -102,7 +100,8 @@ export type ExclusiveRange<
   ? Exclude<Enumerate<TMax>, Enumerate<TMin>>
   : never;
 /**
- * Checks if a number is positive. TNumber could be a union type but must be a literal number type.
+ * Checks if a number is positive.
+ * @template TNumber - Could be a union type but must be a literal number type.
  */
 export type AssertPositive<TNumber extends number> = number extends TNumber
   ? never
@@ -112,7 +111,8 @@ export type AssertPositive<TNumber extends number> = number extends TNumber
 
 export type Integer<T extends number> = `${T}` extends `${bigint}` ? T : never;
 /**
- * Checks if a number is an integer. TNumber could be a union type but must be a literal number type.
+ * Checks if a number is an integer.
+ * @template TNumber - Could be a union type but must be a literal number type.
  */
 export type AssertInteger<TNumber extends number> = number extends TNumber
   ? TNumber
@@ -142,12 +142,9 @@ type TupleOf<
   : TupleOf<TElement, TLength, [TElement, ...TArray], TReadonly>;
 /**
  * Tuple of specific length.
- *
- * TElement can be a union type.
- *
- * Set TReadonly to true to make it readonly.
- *
- * TLength cannot be a negative number. It can also be a union which will return union of tuples.
+ * @template TElement - Can be a union type.
+ * @template TLength - Cannot be a negative number. It can also be a union which will return union of tuples.
+ * @template TReadonly - Set to true to make it readonly.
  * @example
  * ```
  * const foo1: Tuple<string, 1 | 2> = ["a"]; // Pass
@@ -186,7 +183,7 @@ export type FixedLengthTuple<
  * const bar3: TupleUnion<["a", 2]> = [2, 2] as const; // Fail since the TTuple is not readonly the resulting tuple cannot be readonly either.
  * ```
  */
-export type TupleUnion<TTuple extends AnyImmutableArray> =
+export type TupleUnion<TTuple extends UnknownImmutableArray> =
   TTuple extends readonly [...[...infer R]]
     ? FixedLengthTuple<R[IndexOf<R>], TTuple["length"], IsReadOnly<TTuple>>
     : never;
@@ -210,10 +207,9 @@ export type TupleOfMaxLength<
   : never;
 /**
  * Gives tuple of exclusive range.
- *
- * TElement is the type of element in the tuple. It can be a union type.
- *
- * TMax cannot be less than or equal to TMin.
+ * @template TElement - The type of element in the tuple. It can be a union type.
+ * @template TMin - Minimum length.
+ * @template TMax - Cannot be less than or equal to `TMin`.
  */
 export type TupleOfRangedLength<
   TElement,
@@ -228,9 +224,9 @@ export type TupleOfRangedLength<
  */
 export type ExtendsFrom<T, U> = T extends U ? true : false;
 
-export type Composite = AnyMutableArray | AnyFunction | AnyObject;
+export type Composite = UnknownMutableArray | UnknownFunction | UnknownObject;
 
-export type ObjectOrArray = AnyMutableArray | AnyObject;
+export type ObjectOrArray = UnknownMutableArray | UnknownObject;
 /**
  * Checks if 2 types are equal.
  */
@@ -308,7 +304,7 @@ export type IsReadOnly<T> = Readonly<T> extends T ? true : false;
 /**
  * Get a union type of the indices of an array.
  */
-export type IndexOf<T extends AnyImmutableArray> = Extract<
+export type IndexOf<T extends UnknownImmutableArray> = Extract<
   keyof T,
   `${number}`
 > extends `${infer N extends number}`
@@ -339,10 +335,7 @@ export type LiteralUnion<T, TBase extends number | string> =
 export type Expect<T extends true> = T;
 /**
  * Convert a union type to an intersection type.
- *
- * U must be a union type.
- *
- * If U is a union of only primitives it will result in never. U must include at least one Composite type. U cannot contain more than one primitive type.
+ * @template U - Must be a union type. If it is a union of only primitives it will result in never. It must include at least one Composite type. It cannot contain more than one primitive type.
  */
 export type UnionToIntersection<U> = (
   U extends unknown ? (x: U) => void : never
@@ -351,21 +344,19 @@ export type UnionToIntersection<U> = (
   : never;
 /**
  * Get the values of an object.
- *
- * TObj must be a valid object.
- *
- * You can specify which keys to get the values from.
+ * @template TObj - Must be a valid object.
+ * @template Keys - You can specify which keys to get the values from.
  */
 export type ValuesOf<
-  TObj extends AnyObject,
-  K extends keyof TObj = keyof TObj,
-> = TObj[K];
+  TObj extends UnknownObject,
+  Keys extends keyof TObj = keyof TObj,
+> = TObj[Keys];
 /**
  * Get Object entries
  * @see {@link Object.entries}
  */
 export type ObjectEntries<
-  TObj extends AnyObject,
+  TObj extends UnknownObject,
   K extends keyof TObj = keyof TObj,
 > = TObj extends { readonly [X in K]: TObj[X] }
   ? ValuesOf<{

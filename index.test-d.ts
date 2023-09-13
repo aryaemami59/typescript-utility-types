@@ -7,9 +7,6 @@ import {
 } from "tsd";
 
 import type {
-  AnyImmutableArray,
-  AnyMutableArray,
-  AnyObject,
   AssertInteger,
   AssertPositive,
   EmptyImmutableArray,
@@ -25,6 +22,9 @@ import type {
   Length,
   TupleOfRangedLength,
   TupleUnion,
+  UnknownImmutableArray,
+  UnknownMutableArray,
+  UnknownObject,
   XOR,
 } from ".";
 
@@ -60,10 +60,10 @@ expectType<Equal<EmptyMutableTuple, FixedLengthTuple<unknown, 0>>>(true);
 // ExtendsFrom
 expectType<ExtendsFrom<EmptyImmutableTuple, EmptyImmutableArray>>(true);
 expectType<ExtendsFrom<EmptyMutableTuple, EmptyMutableArray>>(true);
-expectType<ExtendsFrom<EmptyImmutableArray, AnyImmutableArray>>(true);
-expectType<ExtendsFrom<EmptyMutableArray, AnyMutableArray>>(true);
-expectType<ExtendsFrom<EmptyObject, AnyObject>>(true);
-expectType<ExtendsFrom<AnyMutableArray, AnyImmutableArray>>(true);
+expectType<ExtendsFrom<EmptyImmutableArray, UnknownImmutableArray>>(true);
+expectType<ExtendsFrom<EmptyMutableArray, UnknownMutableArray>>(true);
+expectType<ExtendsFrom<EmptyObject, UnknownObject>>(true);
+expectType<ExtendsFrom<UnknownMutableArray, UnknownImmutableArray>>(true);
 // Range
 expectAssignable<ExclusiveRange<3>>(2);
 expectAssignable<ExclusiveRange<3, 1>>(2);
